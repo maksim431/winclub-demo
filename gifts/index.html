@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1e1222">
+  <title>Время подарков — ВинЛаб</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./script.js"></script>
+</head>
+<body>
+  <main aria-labelledby="gifts-title">
+    <div class="intro" id="intro">
+      <div class="intro__stage">
+        <img class="intro__poster" src="./assets/hero.jpg" alt="" fetchpriority="high">
+        <div class="intro__frame" aria-hidden="true"></div>
+        <div class="intro__city" aria-hidden="true"></div>
+        <h1 class="intro__title" id="gifts-title"><img src="./assets/title.svg" alt="Время подарков"></h1>
+      </div>
+    </div>
+
+    <section class="promo promo--receipt" aria-labelledby="receipt-title">
+      <div class="promo__content">
+        <div class="promo__panel">
+          <p class="promo__date">01.12-31.12</p>
+          <h2 id="receipt-title">Чековое промо</h2>
+          <div class="promo__description">
+            <p>Загрузите чек от 1000 ₽ и зажгите окно в 3D-городе. К 31 декабря зажжём весь город!</p>
+            <p>Каждая 1000 ₽ в чеке даёт билет на розыгрыш 31 декабря. До 10 билетов за чек.</p>
+            <p>За каждый загруженный чек сотрите иней с окна и получите гарантированный приз: баллы WINCLUB или сертификат на маркетплейс.</p>
+          </div>
+          <div class="promo__tiles">
+            <button class="tile tile--tall" data-action="receiptPartners" type="button">
+              <strong>X3 баллов за чеки<br>с товарами партнёров</strong>
+              <span class="tile__link">Все товары партнёров</span>
+            </button>
+            <button class="tile tile--tall" data-action="receiptRules" type="button"><span class="tile__link">Правила</span></button>
+          </div>
+          <div class="promo__registration">
+            <p>Зарегистрируйте чек в:</p>
+            <div class="promo__buttons">
+              <button class="cta" data-action="vk" type="button">Вконтакте</button>
+              <button class="cta" data-action="telegram" type="button">Телеграм</button>
+              <button class="cta" data-action="max" type="button">МАКС</button>
+            </div>
+          </div>
+        </div>
+        <div class="prizes" data-prizes="receipt"></div>
+      </div>
+    </section>
+
+    <section class="promo promo--shop" aria-labelledby="shop-title">
+      <div class="promo__content">
+        <div class="promo__panel">
+          <p class="promo__date">01.12-31.12</p>
+          <h2 id="shop-title">Подарки за покупки<br>в E-COM</h2>
+          <div class="promo__description">
+            <p>Покупайте товары брендов-участников на сайте или в приложении. За покупки получайте «подарки» на конвейере в личном кабинете.</p>
+            <p>Заполняйте шкалу и получайте баллы WINCLUB за каждый достигнутый уровень. Заполните её целиком, чтобы получить шанс на участие в главном розыгрыше.</p>
+          </div>
+          <div class="promo__tiles">
+            <button class="tile" data-action="shopPartners" type="button"><span class="tile__link">Все товары партнёров</span></button>
+            <button class="tile" data-action="shopRules" type="button"><span class="tile__link">Правила</span></button>
+          </div>
+          <a class="cta promo__shop-cta" href="https://www.winelab.ru/">Начать покупки</a>
+        </div>
+        <div class="prizes" data-prizes="shop"></div>
+      </div>
+    </section>
+  </main>
+  <template id="prizes-template">
+    <div class="prizes__bar">
+      <h3 class="prizes__label">Подарки в промо</h3>
+      <div class="prizes__controls">
+        <button type="button" aria-label="Предыдущие подарки" data-direction="-1"><img src="./assets/carousel-arrow.svg" alt=""></button>
+        <button type="button" aria-label="Следующие подарки" data-direction="1"><img src="./assets/carousel-arrow.svg" alt=""></button>
+      </div>
+    </div>
+    <ul class="prizes__track" tabindex="0" aria-label="Подарки в промо">
+      <li class="prize prize--phone"><img src="./assets/phone.png" alt="" loading="lazy"><span>Apple iPhone 18 Pro</span></li>
+      <li class="prize prize--airpods"><img src="./assets/airpods.png" alt="" loading="lazy"><span>Apple AirPods 5</span></li>
+      <li class="prize prize--points"><img src="./assets/points.png" alt="" loading="lazy"><span>Баллы WINCLUB</span></li>
+      <li class="prize prize--certificates"><img class="certificate certificate--afisha" src="./assets/afisha.png" alt="" loading="lazy"><img class="certificate certificate--ozon" src="./assets/ozon.png" alt="" loading="lazy"><img class="certificate certificate--mask" src="./assets/certificate-mask.svg" alt="" loading="lazy"><span>Сертификаты на Яндекс Афишу<br>и маркетплейсы</span></li>
+      <li class="prize prize--ipad"><img src="./assets/ipad.png" alt="" loading="lazy"><span>Apple iPad Air M4</span></li>
+      <li class="prize prize--tefal"><img src="./assets/tefal.png" alt="" loading="lazy"><span>Аэрогриль Tefal</span></li>
+      <li class="prize prize--station"><img src="./assets/station.png" alt="" loading="lazy"><span>Яндекс Станция 3</span></li>
+      <li class="prize prize--vacuum"><img src="./assets/vacuum.png" alt="" loading="lazy"><span>Робот-пылесос Xiaomi Robot<br>Vacuum S40 белый</span></li>
+    </ul>
+  </template>
+  <dialog id="action-dialog" aria-labelledby="action-title">
+    <h2 id="action-title"></h2>
+    <p>Ссылка для этого действия пока недоступна.</p>
+    <form method="dialog"><button class="cta" type="submit">Закрыть</button></form>
+  </dialog>
+</body>
+</html>
