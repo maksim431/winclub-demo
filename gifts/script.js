@@ -16,6 +16,7 @@ const sheetUrls = Array.from({ length: Math.ceil(frameCount / framesPerSheet) },
 let renderRequest = 0;
 let currentFrame = -1;
 let ready = false;
+let handoffComplete = false;
 let preloadRequest;
 
 function renderTransition() {
@@ -26,7 +27,8 @@ function renderTransition() {
   const position = intro.getBoundingClientRect();
   const distance = Math.max(1, position.height - stageHeight);
   const progress = clamp(-position.top / distance);
-  const incoming = Math.max(0, receipt.getBoundingClientRect().top);
+  if (handoffComplete && progress === 1) return;
+  handoffComplete = progress === 1;
   const frame = Math.round(progress * (frameCount - 1));
 
   if (frame !== currentFrame) {
@@ -39,12 +41,15 @@ function renderTransition() {
   intro.style.setProperty("--title-opacity", 1 - smooth(clamp(progress / titleFadeEnd)));
   intro.style.setProperty("--city-opacity", smooth(clamp((progress - 0.9) / 0.1)));
 
+  if (handoffComplete) {
+    receipt.removeAttribute("style");
+    receiptContent.removeAttribute("style");
+    return;
+  }
+
+  // The overlapping section already moves in document flow during the reveal.
+  receipt.style.setProperty("--receipt-background-opacity", 0);
   const reveal = smooth(clamp((progress - 0.77) / 0.23));
-  const offset = reveal * Math.min(incoming, stageHeight);
-  const cityOffset = Math.min(incoming, stageHeight);
-  intro.style.setProperty("--city-compensation", `${stageHeight - cityOffset}px`);
-  receipt.style.setProperty("--city-position", `${-cityOffset}px`);
-  receiptContent.style.transform = offset > 0 ? `translateY(${-offset}px)` : "";
   receiptContent.style.opacity = reveal;
   receiptContent.style.visibility = reveal > 0.02 ? "" : "hidden";
 }
@@ -61,6 +66,7 @@ function syncMotionPreference() {
   if (active) {
     scheduleTransition();
   } else {
+    handoffComplete = false;
     intro.removeAttribute("style");
     receipt.removeAttribute("style");
     receiptContent.removeAttribute("style");
@@ -91,15 +97,28 @@ for (const carousel of document.querySelectorAll("[data-prizes]")) {
   const track = carousel.querySelector(".prizes__track");
   const previous = carousel.querySelector('[data-direction="-1"]');
   const next = carousel.querySelector('[data-direction="1"]');
+  const [first, second] = track.children;
+  let step;
 
   function updateButtons() {
     previous.disabled = track.scrollLeft < 2;
     next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
   }
 
+  function updateTrackGeometry() {
+    const firstCard = first.getBoundingClientRect();
+    step = second.getBoundingClientRect().left - firstCard.left;
+    const gap = step - firstCard.width;
+    const visibleCards = (track.clientWidth + gap) / step;
+    // Leave enough space for the last scroll position to land on a whole card.
+    const endSpace = visibleCards < track.children.length
+      ? (visibleCards - Math.floor(visibleCards)) * step
+      : 0;
+    track.style.setProperty("--track-end-space", `${endSpace}px`);
+    updateButtons();
+  }
+
   function move(direction) {
-    const [first, second] = track.children;
-    const step = second.offsetLeft - first.offsetLeft;
     const index = Math.round(track.scrollLeft / step) + direction;
     track.scrollTo({ left: index * step, behavior: reducedMotion.matches ? "instant" : "smooth" });
   }
@@ -107,8 +126,8 @@ for (const carousel of document.querySelectorAll("[data-prizes]")) {
   previous.addEventListener("click", () => move(-1));
   next.addEventListener("click", () => move(1));
   track.addEventListener("scroll", updateButtons, { passive: true });
-  new ResizeObserver(updateButtons).observe(track);
-  updateButtons();
+  new ResizeObserver(updateTrackGeometry).observe(track);
+  updateTrackGeometry();
 }
 
 const actionDialog = document.querySelector("#action-dialog");

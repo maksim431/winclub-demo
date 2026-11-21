@@ -43,8 +43,7 @@ button { border: 0; cursor: pointer; }
 .intro__city {
   position: absolute;
   inset: 0;
-  background: url("./assets/city.jpg") top center / 100% auto no-repeat;
-  transform: translateY(var(--city-compensation, 0px));
+  background: #2c2346 url("./assets/city.jpg") top center / 100% auto no-repeat;
   opacity: var(--city-opacity, 0);
 }
 .intro__title {
@@ -69,8 +68,13 @@ button { border: 0; cursor: pointer; }
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
-.promo--receipt { min-height: calc(1300 * var(--u)); background: #2c2346; }
-.promo--receipt::before { inset: 0; background: url("./assets/city.jpg") center var(--city-position, 0px) / 100% auto no-repeat; }
+.promo--receipt { min-height: calc(1300 * var(--u)); }
+.has-motion .promo--receipt { margin-top: -100svh; }
+.promo--receipt::before {
+  inset: 0;
+  background: #2c2346 url("./assets/city.jpg") top center / 100% auto no-repeat;
+  opacity: var(--receipt-background-opacity, 1);
+}
 .promo--shop { min-height: calc(1345 * var(--u)); background: #251738; }
 .promo--shop::before { inset: 0; background-image: url("./assets/warehouse.jpg"); }
 .promo__content { position: relative; }
@@ -137,7 +141,7 @@ button { border: 0; cursor: pointer; }
   gap: calc(16 * var(--u));
   margin-top: calc(10 * var(--u));
   margin-left: var(--gutter);
-  padding: 0 var(--gutter) 0 0;
+  padding: 0 var(--track-end-space, 0px) 0 0;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scrollbar-width: none;
