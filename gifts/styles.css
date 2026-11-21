@@ -140,12 +140,12 @@ button { border: 0; cursor: pointer; }
   display: flex;
   gap: calc(16 * var(--u));
   margin-top: calc(10 * var(--u));
-  margin-left: var(--gutter);
-  padding: 0 var(--track-end-space, 0px) 0 0;
+  padding-inline: var(--gutter) var(--track-end-space, 0px);
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: var(--gutter);
   list-style: none;
 }
 .prizes__track::-webkit-scrollbar { display: none; }

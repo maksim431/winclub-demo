@@ -109,7 +109,8 @@ for (const carousel of document.querySelectorAll("[data-prizes]")) {
     const firstCard = first.getBoundingClientRect();
     step = second.getBoundingClientRect().left - firstCard.left;
     const gap = step - firstCard.width;
-    const visibleCards = (track.clientWidth + gap) / step;
+    const startInset = parseFloat(getComputedStyle(track).paddingInlineStart);
+    const visibleCards = (track.clientWidth - startInset + gap) / step;
     // Leave enough space for the last scroll position to land on a whole card.
     const endSpace = visibleCards < track.children.length
       ? (visibleCards - Math.floor(visibleCards)) * step
