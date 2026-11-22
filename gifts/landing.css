@@ -42,6 +42,16 @@
 .hero-green-ornament img { position: absolute; display: block; }
 .hero-green-ornament { overflow: clip; }
 .hero-green-ornament img { left: -340.3%; top: -367.94%; width: 558.07%; height: 471.3%; }
+.hero-float {
+  animation: hero-float var(--float-duration) ease-in-out var(--float-delay) infinite alternate;
+}
+.hero-float--left { --float-distance: 10; --float-duration: 3.3s; --float-delay: -.8s; }
+.hero-float--middle { --float-distance: 8; --float-duration: 3.9s; --float-delay: -2.4s; }
+.hero-float--right { --float-distance: 12; --float-duration: 4.2s; --float-delay: -4.8s; }
+@keyframes hero-float {
+  from { translate: 0 calc(-1 * var(--float-distance) * var(--u)); }
+  to { translate: 0 calc(var(--float-distance) * var(--u)); }
+}
 @keyframes campaign-fade { from { opacity: 0; } }
 @keyframes campaign-rise {
   from { opacity: 0; transform: translateY(calc(18 * var(--u))); }
@@ -112,6 +122,7 @@
   background: white;
   color: #231226;
   font-size: calc(24 * var(--u));
+  font-weight: 400;
 }
 .campaign-hero__link:hover { background: #f9e5f5; }
 .campaign-brands {
@@ -309,16 +320,30 @@
 }
 .campaign-advent .campaign-heading { text-align: left; }
 .campaign-advent__cards {
+  --advent-gap: calc(16 * var(--u));
   width: calc(1888 * var(--u));
   margin: calc(56 * var(--u)) auto;
+  overflow: clip;
+}
+.campaign-advent__track {
+  display: flex;
+  gap: var(--advent-gap);
+  animation: advent-scroll 52s linear infinite;
+}
+.campaign-advent__set {
+  flex: 0 0 100%;
+  min-width: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: calc(16 * var(--u));
+  gap: var(--advent-gap);
 }
-.campaign-advent__cards > div {
+.campaign-advent__set > div {
   border-radius: calc(40 * var(--u));
   height: calc(577 * var(--u));
   background: #693867;
+}
+@keyframes advent-scroll {
+  to { transform: translateX(calc(-100% - var(--advent-gap))); }
 }
 .campaign-pair { position: relative; margin-top: calc(456 * var(--u)); }
 .campaign-pair__track {
@@ -383,6 +408,7 @@
 .campaign-footer__bottom p { font-size: calc(18 * var(--u)); }
 .campaign-footer__bottom button { font-size: calc(12 * var(--u)); font-weight: 700; text-transform: uppercase; }
 @media (prefers-reduced-motion: reduce) {
-  .campaign-hero__art, .campaign-hero__copy, .campaign-brands { animation: none; }
+  .campaign-hero__art, .campaign-hero__copy, .campaign-brands,
+  .hero-float, .campaign-advent__track { animation: none; }
   .super-orb-group, .super-lightning { transition: none; }
 }
