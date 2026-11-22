@@ -6,11 +6,23 @@
   <meta name="theme-color" content="#1e1222">
   <title>Время сиять — Новый год с ВинЛаб</title>
   <link rel="stylesheet" href="./styles.css?v=24a6517e">
-  <link rel="stylesheet" href="./landing.css?v=538f2609">
-  <script defer src="./landing.js?v=3a979219"></script>
+  <link rel="stylesheet" href="./landing.css?v=d4effad3">
+  <script defer src="./garland-paths.js?v=732473da"></script>
+  <script defer src="./landing.js?v=db5a49ee"></script>
   <script defer src="./script.js?v=bbf35247"></script>
 </head>
 <body>
+  <header class="campaign-header campaign-wrap">
+    <a href="#top" aria-label="ВинЛаб"><img class="campaign-header__logo" src="./assets/landing/logo.svg" alt="ВинЛаб"></a>
+    <nav aria-label="Разделы акции">
+      <a href="#sparkling">Скидки на игристое</a>
+      <a href="#superpoints">Супербаллы</a>
+      <a href="#superdeals">Суперскидки</a>
+      <a href="#advent">Адвент-календарь</a>
+      <a href="#intro">Время подарков</a>
+    </nav>
+    <img class="campaign-header__snow" src="./assets/landing/header-snow.svg" alt="">
+  </header>
   <main aria-labelledby="campaign-title">
     <section class="campaign-hero" id="top" aria-labelledby="campaign-title">
       <div class="campaign-hero__scene">
@@ -18,7 +30,7 @@
           <img class="campaign-hero__background" src="./assets/landing/hero-background.jpg" alt="" fetchpriority="high">
           <img class="hero-object hero-rays" style="--x:405;--y:-530;--w:1700;--h:1730;--turn:-142deg" src="./assets/landing/hero-rays.svg" alt="">
           <img class="hero-object hero-green-gift" style="--x:1147;--y:550;--w:338;--h:298" src="./assets/landing/hero-green-gift.png" alt="">
-          <img class="hero-object hero-garland" style="--x:0;--y:1;--w:1920;--h:1079" src="./assets/landing/hero-line.png" alt="">
+          <img class="hero-object" data-garland="hero" style="--x:0;--y:1;--w:1920;--h:1079" src="./assets/landing/hero-line.png" alt="">
           <img class="hero-object hero-sparkler" style="--x:-185;--y:556;--w:482;--h:880;--turn:154.41deg;--flip:-1" src="./assets/landing/sparkler.png" alt="">
           <img class="hero-object hero-ornament" style="--x:-237;--y:-170;--w:428;--h:428;--turn:30.38deg" src="./assets/landing/purple-ornament.png" alt="">
           <img class="hero-object hero-ornament" style="--x:1774;--y:881;--w:430;--h:430;--turn:-32.98deg" src="./assets/landing/purple-ornament.png" alt="">
@@ -29,22 +41,11 @@
           <img class="hero-object" style="--x:1391.09;--y:283.39;--w:446.6;--h:794.23" src="./assets/landing/glass-scene-right.png" alt="">
           <img class="hero-object" style="--x:1416;--y:332;--w:208;--h:208" src="./assets/landing/sparkle-large.png" alt="">
           <img class="hero-object" style="--x:940;--y:262;--w:139;--h:139" src="./assets/landing/sparkle.png" alt="">
-          <img class="hero-object hero-garland hero-garland--front" style="--x:1598;--y:834;--w:322;--h:109" src="./assets/landing/hero-line-front.png" alt="">
-          <img class="hero-object hero-garland hero-garland--glass" style="--x:1199;--y:230;--w:140;--h:85" src="./assets/landing/hero-line-glass.png" alt="">
+          <img class="hero-object" data-garland="front" style="--x:1598;--y:834;--w:322;--h:109" src="./assets/landing/hero-line-front.png" alt="">
+          <img class="hero-object" data-garland="glass" style="--x:1199;--y:230;--w:140;--h:85" src="./assets/landing/hero-line-glass.png" alt="">
           <div class="hero-object hero-green-ornament" style="--x:1344.46;--y:242.42;--w:142.86;--h:169.16;--turn:7.85deg"><img src="./assets/landing/green-ornament-source.png" alt=""></div>
           <img class="hero-object" style="--x:1205;--y:99;--w:99;--h:99" src="./assets/landing/sparkle-small.png" alt="">
         </div>
-        <header class="campaign-header campaign-wrap">
-          <a href="#top" aria-label="ВинЛаб"><img class="campaign-header__logo" src="./assets/landing/logo.svg" alt="ВинЛаб"></a>
-          <nav aria-label="Разделы акции">
-            <a href="#sparkling">Скидки на игристое</a>
-            <a href="#superpoints">Супербаллы</a>
-            <a href="#superdeals">Суперскидки</a>
-            <a href="#advent">Адвент-календарь</a>
-            <a href="#intro">Время подарков</a>
-          </nav>
-          <img class="campaign-header__snow" src="./assets/landing/header-snow.svg" alt="">
-        </header>
         <div class="campaign-hero__copy campaign-wrap">
           <h1 id="campaign-title"><img src="./assets/landing/shine-title.svg" alt="Время сиять"></h1>
           <p>Подготовили для вас целую коллекцию зимних радостей</p>
@@ -57,8 +58,8 @@
     </section>
 
     <div class="campaign-promos">
-      <div class="campaign-promos__garland" data-scroll-garland aria-hidden="true">
-        <img src="./assets/landing/garland.png" alt="">
+      <div class="campaign-promos__garland" aria-hidden="true">
+        <img data-garland="page" src="./assets/landing/garland.png" alt="">
       </div>
 
       <section class="campaign-discount campaign-wrap" id="sparkling" aria-labelledby="sparkling-title">
@@ -139,16 +140,20 @@
           </div>
           <button class="super-trigger" type="button" data-action="superdeals" aria-label="Суперскидки"></button>
           <div class="super-composition" aria-hidden="true">
-            <img class="hero-object super-orb" style="--x:600.54;--y:328.06;--w:726;--h:797" src="./assets/landing/super-orb.png" alt="">
-            <div class="super-garland" data-scroll-garland>
-              <img src="./assets/landing/super-line.png" alt="">
+            <div class="super-orb-group">
+              <img class="hero-object" style="--x:600.54;--y:328.06;--w:725.72;--h:796.87" src="./assets/landing/super-orb.png" alt="">
             </div>
-            <img class="hero-object super-orb" style="--x:720.34;--y:328.06;--w:606;--h:351" src="./assets/landing/super-orb-top.png" alt="">
-            <img class="hero-object super-orb" style="--x:600.55;--y:702.57;--w:626;--h:423" src="./assets/landing/super-orb-bottom.png" alt="">
+            <div class="super-garland">
+              <img data-garland="super" src="./assets/landing/super-line.png" alt="">
+            </div>
+            <div class="super-orb-group">
+              <img class="hero-object" style="--x:720.34;--y:328.06;--w:605.92;--h:350.77" src="./assets/landing/super-orb-top.png" alt="">
+              <img class="hero-object" style="--x:600.54;--y:702.57;--w:625.14;--h:422.36" src="./assets/landing/super-orb-bottom.png" alt="">
+            </div>
             <img class="hero-object super-lightning super-lightning--right" style="--x:1316;--y:353;--w:193;--h:240" src="./assets/landing/lightning-right.svg" alt="">
             <img class="hero-object super-lightning super-lightning--right" style="--x:1316;--y:904;--w:193;--h:240;--flip:-1" src="./assets/landing/lightning-right.svg" alt="">
-            <img class="hero-object super-lightning super-lightning--left" style="--x:610;--y:353;--w:193;--h:240;--turn:180deg;--flip:-1" src="./assets/landing/lightning-left.svg" alt="">
-            <img class="hero-object super-lightning super-lightning--left" style="--x:610;--y:904;--w:193;--h:240;--turn:180deg" src="./assets/landing/lightning-left.svg" alt="">
+            <img class="hero-object super-lightning super-lightning--left" style="--x:417;--y:353;--w:193;--h:240;--mirror:-1" src="./assets/landing/lightning-left.svg" alt="">
+            <img class="hero-object super-lightning super-lightning--left" style="--x:417;--y:904;--w:193;--h:240;--mirror:-1;--flip:-1" src="./assets/landing/lightning-left.svg" alt="">
             <img class="hero-object" style="--x:729;--y:383;--w:239;--h:239" src="./assets/landing/sparkle.png" alt="">
           </div>
         </div>
@@ -243,7 +248,16 @@
     </section>
   </main>
   <footer class="campaign-footer" aria-label="Информация о ВинЛаб">
-    <img class="campaign-footer__art" src="./assets/landing/footer-art.png" alt="" loading="lazy">
+    <div class="campaign-footer__art" aria-hidden="true">
+    <img class="hero-object" style="--x:687;--y:46;--w:425;--h:425" src="./assets/landing/footer-gift.png" alt="" loading="lazy">
+    <img class="hero-object" style="--x:1212;--y:148;--w:322.78;--h:322.78" src="./assets/landing/footer-purple.png" alt="" loading="lazy">
+    <img class="hero-object" style="--x:1623.68;--y:51.86;--w:264.63;--h:264.63" src="./assets/landing/footer-green.png" alt="" loading="lazy">
+    <img class="hero-object" style="--x:33;--y:135;--w:384.04;--h:384.04" src="./assets/landing/footer-orange.png" alt="" loading="lazy">
+    <img class="hero-object footer-glass--dark" style="--x:517;--y:27;--w:275.3;--h:771.02" src="./assets/landing/footer-glass-dark.png" alt="" loading="lazy">
+    <img class="hero-object footer-glass--light" style="--x:517;--y:27;--w:275.3;--h:771.02" src="./assets/landing/footer-glass-light.png" alt="" loading="lazy">
+    <img class="hero-object" style="--x:584;--y:46;--w:177;--h:178" src="./assets/landing/footer-star.png" alt="" loading="lazy">
+    <img class="footer-garland" data-garland="footer" src="./assets/landing/footer-art.png" alt="">
+  </div>
     <div class="campaign-wrap campaign-footer__content">
       <div class="campaign-footer__main">
         <div class="campaign-footer__contacts">

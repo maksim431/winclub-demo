@@ -5,7 +5,7 @@
   width: calc(1480 * var(--u));
   margin-inline: auto;
 }
-.campaign-promos section[id] { scroll-margin-top: calc(48 * var(--u)); }
+.campaign-promos section[id], #intro { scroll-margin-top: calc(128 * var(--u)); }
 .campaign-hero, .campaign-promos, .campaign-footer {
   overflow: clip;
   position: relative;
@@ -34,7 +34,7 @@
   top: calc(var(--y) * var(--u));
   width: calc(var(--w) * var(--u));
   height: calc(var(--h) * var(--u));
-  transform: rotate(var(--turn, 0deg)) scaleY(var(--flip, 1));
+  transform: rotate(var(--turn, 0deg)) scale(var(--mirror, 1), var(--flip, 1));
 }
 .hero-rays { mix-blend-mode: plus-lighter; }
 .hero-sparkler { filter: blur(calc(5 * var(--u))); object-fit: cover; object-position: bottom; }
@@ -42,20 +42,15 @@
 .hero-green-ornament img { position: absolute; display: block; }
 .hero-green-ornament { overflow: clip; }
 .hero-green-ornament img { left: -340.3%; top: -367.94%; width: 558.07%; height: 471.3%; }
-.hero-garland { animation: hero-garland 1300ms 80ms ease both; }
-.hero-garland--front { animation-delay: 520ms; }
-.hero-garland--glass { animation-delay: 200ms; }
-@keyframes hero-garland {
-  from { clip-path: inset(0 0 100%); }
-  to { clip-path: inset(0); }
-}
 @keyframes campaign-fade { from { opacity: 0; } }
 @keyframes campaign-rise {
   from { opacity: 0; transform: translateY(calc(18 * var(--u))); }
 }
 .campaign-header {
-  position: absolute;
-  left: calc(220 * var(--u));
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
   top: calc(26 * var(--u));
   display: flex;
   align-items: center;
@@ -146,8 +141,11 @@
   transform: translateX(-50%);
   pointer-events: none;
 }
-[data-scroll-garland] { clip-path: inset(0 0 var(--garland-hidden, 0%) 0); }
-.campaign-promos__garland img, .super-garland img { display: block; width: 100%; height: 100%; }
+.campaign-promos__garland > *, .super-garland > *, .footer-garland {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .campaign-heading, .discount-products__heading {
   display: flex;
   justify-content: space-between;
@@ -289,11 +287,14 @@
   background: transparent;
 }
 .super-composition { pointer-events: none; position: absolute; inset: 0; }
-.super-orb { transform-origin: var(--orb-origin, center); transition: scale 300ms ease; }
-.super-orb:nth-of-type(2) { --orb-origin: 40% 114%; }
-.super-orb:nth-of-type(3) { --orb-origin: 60% -24%; }
+.super-orb-group {
+  position: absolute;
+  inset: 0;
+  transform-origin: calc(963.4 * var(--u)) calc(726.5 * var(--u));
+  transition: scale 300ms ease;
+}
 .super-lightning { transition: translate 300ms ease; }
-.super-trigger:is(:hover, :focus-visible) + .super-composition .super-orb { scale: .94; }
+.super-trigger:is(:hover, :focus-visible) + .super-composition .super-orb-group { scale: .94; }
 .super-trigger:is(:hover, :focus-visible) + .super-composition .super-lightning--left { translate: calc(-56 * var(--u)) 0; }
 .super-trigger:is(:hover, :focus-visible) + .super-composition .super-lightning--right { translate: calc(56 * var(--u)) 0; }
 .super-garland {
@@ -334,12 +335,16 @@
 }
 .campaign-footer__art {
   position: absolute;
+  top: 0;
   width: calc(1920 * var(--u));
   height: calc(1050 * var(--u));
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
 }
+.footer-glass--dark { mix-blend-mode: multiply; }
+.footer-glass--light { mix-blend-mode: hard-light; }
+.footer-garland { position: absolute; inset: 0; }
 .campaign-footer__content { position: relative; padding-top: calc(565 * var(--u)); }
 .campaign-footer__main { display: flex; justify-content: space-between; min-height: calc(400 * var(--u)); padding-bottom: calc(46 * var(--u)); }
 .campaign-footer__contacts { display: flex; flex-direction: column; justify-content: space-between; }
@@ -378,6 +383,6 @@
 .campaign-footer__bottom p { font-size: calc(18 * var(--u)); }
 .campaign-footer__bottom button { font-size: calc(12 * var(--u)); font-weight: 700; text-transform: uppercase; }
 @media (prefers-reduced-motion: reduce) {
-  .campaign-hero__art, .campaign-hero__copy, .campaign-brands, .hero-garland { animation: none; }
-  [data-scroll-garland] { clip-path: none; }
+  .campaign-hero__art, .campaign-hero__copy, .campaign-brands { animation: none; }
+  .super-orb-group, .super-lightning { transition: none; }
 }
