@@ -134,7 +134,7 @@ for (const carousel of document.querySelectorAll("[data-prizes]")) {
 const actionDialog = document.querySelector("#action-dialog");
 for (const button of document.querySelectorAll("[data-action]")) {
   button.addEventListener("click", () => {
-    actionDialog.querySelector("h2").textContent = (button.querySelector(".tile__link") ?? button).textContent.trim();
+    actionDialog.querySelector("h2").textContent = button.getAttribute("aria-label") || (button.querySelector(".tile__link") ?? button).textContent.trim();
     actionDialog.showModal();
   });
 }
