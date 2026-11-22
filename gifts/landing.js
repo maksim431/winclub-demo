@@ -2,6 +2,7 @@ const campaignMotion = matchMedia("(prefers-reduced-motion: reduce)");
 const campaignHero = document.querySelector(".campaign-hero__scene");
 const campaignFooter = document.querySelector(".campaign-footer");
 const svgNamespace = "http://www.w3.org/2000/svg";
+const heroDrawDuration = 1500;
 const garlandLayout = {
   hero: { route: "hero", box: [0, 1, 1920, 1079], origin: [-554.488, -118.5] },
   front: { route: "page", box: [1598, 834, 322, 109], origin: [-554.488, -66.5] },
@@ -43,7 +44,7 @@ function makeGarland(art) {
   art.replaceWith(svg);
 
   const length = path.getTotalLength();
-  return { path, length, route, box, origin, svg, distance: -1 };
+  return { name, path, length, route, box, origin, svg, distance: -1 };
 }
 
 function measureScrollMarkers(garland) {
@@ -74,46 +75,60 @@ function distanceAtScroll(markers, y) {
   return markers[low].distance + fraction * (markers[high].distance - markers[low].distance);
 }
 
-const scrollGarlands = [...document.querySelectorAll("img[data-garland]")].map(makeGarland);
-const pageGarlandMarkers = {
-  hero: measureScrollMarkers(scrollGarlands.find(garland => garland.route === "hero")),
-  page: measureScrollMarkers(scrollGarlands.find(garland => garland.route === "page")),
-};
-const orbGarland = scrollGarlands.find(garland => garland.route === "super");
-const orbPathDistances = Array.from({ length: 501 }, (_, index) => orbGarland.length * index / 500)
-  .filter(distance => {
-    const point = orbGarland.path.getPointAtLength(distance);
-    const [x, y, width, height] = orbGarland.box;
-    const worldX = point.x + orbGarland.origin[0];
-    const worldY = point.y + orbGarland.origin[1];
+function visiblePathRange(garland, [x, y, width, height] = garland.box) {
+  const distances = Array.from({ length: 501 }, (_, index) => garland.length * index / 500);
+  const visibleDistances = distances.filter(distance => {
+    const point = garland.path.getPointAtLength(distance);
+    const worldX = point.x + garland.origin[0];
+    const worldY = point.y + garland.origin[1];
     return worldX >= x - 56 && worldX <= x + width + 56 && worldY >= y - 56 && worldY <= y + height + 56;
   });
-const orbPathStart = orbPathDistances[0] ?? 0;
-const orbPathEnd = orbPathDistances.at(-1) ?? orbGarland.length;
+  return [visibleDistances[0] ?? 0, visibleDistances.at(-1) ?? garland.length];
+}
+
+const garlandArtwork = [...document.querySelectorAll("img[data-garland]")];
+const heroArtwork = garlandArtwork.filter(art => ["hero", "front", "glass"].includes(art.dataset.garland));
+let heroDrawFinished = campaignMotion.matches || !["", "#top"].includes(location.hash);
+let heroDrawStart;
+const heroArtworkReady = heroDrawFinished ? null : Promise.allSettled(heroArtwork.map(art => art.decode()));
+const heroRanges = new Map();
+const scrollGarlands = garlandArtwork.map(art => {
+  const garland = makeGarland(art);
+  if (heroArtwork.includes(art)) heroRanges.set(garland, visiblePathRange(garland, [0, 0, 1920, 1080]));
+  return garland;
+});
+const pageGarlandMarkers = measureScrollMarkers(scrollGarlands.find(garland => garland.name === "page"));
+const orbGarland = scrollGarlands.find(garland => garland.route === "super");
+const [orbPathStart, orbPathEnd] = visiblePathRange(orbGarland);
 let garlandFrame = 0;
 
-function revealGarlands() {
+function revealGarlands(now = performance.now()) {
   garlandFrame = 0;
   const hero = campaignHero.getBoundingClientRect();
+  if (campaignMotion.matches || hero.bottom <= 0) heroDrawFinished = true;
+  const heroProgress = heroDrawFinished ? 1 : Math.min(1, (now - (heroDrawStart ?? now)) / heroDrawDuration);
+  if (heroProgress === 1) heroDrawFinished = true;
   const scrollLine = (innerHeight * .74 - hero.top) * 1920 / hero.width;
   const footerTop = campaignFooter.getBoundingClientRect().top;
   const footerProgress = Math.max(0, Math.min(1, (innerHeight * .8 - footerTop) / (innerHeight * .74)));
   const orb = orbGarland.svg.getBoundingClientRect();
   const orbProgress = Math.max(0, Math.min(1, (innerHeight * .88 - orb.top) / (orb.height + innerHeight * .22)));
   const distances = {
-    hero: distanceAtScroll(pageGarlandMarkers.hero, scrollLine),
-    page: distanceAtScroll(pageGarlandMarkers.page, scrollLine),
+    page: distanceAtScroll(pageGarlandMarkers, scrollLine),
     super: orbPathStart + (orbPathEnd - orbPathStart) * orbProgress,
   };
   for (const garland of scrollGarlands) {
+    const heroRange = heroRanges.get(garland);
     const distance = Math.round(campaignMotion.matches ? garland.length
+      : heroRange ? heroRange[0] + (heroRange[1] - heroRange[0]) * heroProgress
       : garland.route === "footer" ? garland.length * footerProgress
       : distances[garland.route]);
     if (distance === garland.distance) continue;
-    garland.path.style.opacity = distance > 0 ? 1 : 0;
+    garland.path.style.opacity = distance > 0 && (!heroRange || heroProgress > 0) ? 1 : 0;
     garland.path.style.strokeDasharray = `${distance} ${garland.length + 112}`;
     garland.distance = distance;
   }
+  if (!heroDrawFinished && heroDrawStart !== undefined) scheduleGarlandReveal();
 }
 
 function scheduleGarlandReveal() {
@@ -124,6 +139,10 @@ window.addEventListener("scroll", scheduleGarlandReveal, { passive: true });
 window.addEventListener("resize", scheduleGarlandReveal);
 campaignMotion.addEventListener("change", scheduleGarlandReveal);
 revealGarlands();
+heroArtworkReady?.then(() => {
+  heroDrawStart = performance.now();
+  scheduleGarlandReveal();
+});
 
 for (const carousel of document.querySelectorAll("[data-campaign-carousel]")) {
   const track = carousel.querySelector(".campaign-carousel");
