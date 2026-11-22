@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#1e1222">
   <title>Время сиять — Новый год с ВинЛаб</title>
   <link rel="stylesheet" href="./styles.css?v=24a6517e">
-  <link rel="stylesheet" href="./landing.css?v=fbd6b608">
+  <link rel="stylesheet" href="./landing.css?v=glass-layers">
   <script defer src="./garland-paths.js?v=732473da"></script>
   <script defer src="./landing.js?v=1a592c59"></script>
   <script defer src="./script.js?v=bbf35247"></script>
@@ -35,10 +35,14 @@
           <img class="hero-object hero-ornament" style="--x:-237;--y:-170;--w:428;--h:428;--turn:30.38deg" src="./assets/landing/purple-ornament.png" alt="">
           <img class="hero-object hero-ornament" style="--x:1774;--y:881;--w:430;--h:430;--turn:-32.98deg" src="./assets/landing/purple-ornament.png" alt="">
           <img class="hero-object hero-purple-gift" style="--x:688;--y:647;--w:380;--h:380;--turn:180deg;--flip:-1" src="./assets/landing/purple-gift.png" alt="">
-          <img class="hero-object hero-float hero-float--left" style="--x:890;--y:243;--w:231.22;--h:647.06" src="./assets/landing/glass-scene-left.png" alt="">
-          <img class="hero-object hero-float hero-float--middle" style="--x:1138.85;--y:81;--w:264.52;--h:528.45" src="./assets/landing/glass-scene-middle.png" alt="">
+          <!-- Each exposure layer retains its 50% opacity from the Figma export. -->
+          <img class="hero-object hero-float hero-float--left hero-glass-base" style="--x:890;--y:243;--w:231.04;--h:647.06" src="./assets/landing/glass-scene-left.png?v=glass-layers" alt="">
+          <img class="hero-object hero-float hero-float--left" style="--x:890.18;--y:243;--w:231.04;--h:647.06" src="./assets/landing/glass-scene-left-highlights.png" alt="">
+          <img class="hero-object hero-float hero-float--middle hero-glass-base" style="--x:1138.85;--y:81;--w:264.52;--h:528.45" src="./assets/landing/glass-scene-middle.png?v=glass-layers" alt="">
+          <img class="hero-object hero-float hero-float--middle" style="--x:1138.85;--y:81;--w:264.52;--h:528.45" src="./assets/landing/glass-scene-middle-highlights.png" alt="">
           <img class="hero-object hero-sparkler" style="--x:1714;--y:-45;--w:499;--h:911;--turn:-30deg" src="./assets/landing/sparkler.png" alt="">
-          <img class="hero-object hero-float hero-float--right" style="--x:1391.09;--y:283.39;--w:446.6;--h:794.23" src="./assets/landing/glass-scene-right.png" alt="">
+          <img class="hero-object hero-float hero-float--right hero-glass-base" style="--x:1391.09;--y:283.39;--w:446.6;--h:794.23" src="./assets/landing/glass-scene-right.png?v=glass-layers" alt="">
+          <img class="hero-object hero-float hero-float--right" style="--x:1391.09;--y:283.39;--w:446.6;--h:794.23" src="./assets/landing/glass-scene-right-highlights.png" alt="">
           <img class="hero-object hero-float hero-float--right" style="--x:1416;--y:332;--w:208;--h:208" src="./assets/landing/sparkle-large.png" alt="">
           <img class="hero-object hero-float hero-float--left" style="--x:940;--y:262;--w:139;--h:139" src="./assets/landing/sparkle.png" alt="">
           <img class="hero-object" data-garland="front" style="--x:1598;--y:834;--w:322;--h:109" src="./assets/landing/hero-line-front.png" alt="">

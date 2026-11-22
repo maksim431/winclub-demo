@@ -37,6 +37,7 @@
   transform: rotate(var(--turn, 0deg)) scale(var(--mirror, 1), var(--flip, 1));
 }
 .hero-rays { mix-blend-mode: plus-lighter; }
+.hero-glass-base { mix-blend-mode: hard-light; }
 .hero-sparkler { filter: blur(calc(5 * var(--u))); object-fit: cover; object-position: bottom; }
 .hero-ornament { filter: blur(calc(6 * var(--u))); }
 .hero-green-ornament img { position: absolute; display: block; }
